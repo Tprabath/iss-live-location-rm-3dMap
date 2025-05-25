@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISS Details</title>
+</head>
+
+<body onload="updateData();">
+
+    <style>
+        body{
+            background-color: black;
+        }
+        .label{
+            font-family:cursive;
+            color: rgb(255, 255, 255);
+            text-shadow: 0px 5px 15px rgb(0, 110, 255);
+            margin: 0px;
+            padding: 5px;
+        }
+    </style>
+
+    <div class="div">
+       
+        <table>
+            <tr>
+                <td class="label">Speed</td>
+                <td class="label">:</td>
+                <td class="label" id="speed">Loading...</td>
+            </tr>
+            <tr>
+                <td class="label">Latitude</td>
+                <td class="label">:</td>
+                <td class="label" id="latitude">Loading...</td>
+            </tr>
+            <tr>
+                <td class="label">Longitude</td>
+                <td class="label">:</td>
+                <td class="label" id="longitude">Loading...</td>
+            </tr>
+            <tr>
+                <td class="label">Altitude</td>
+                <td class="label">:</td>
+                <td class="label" id="altitude">Loading...</td>
+            </tr>
+            <tr>
+                <td class="label">Visibility</td>
+                <td class="label">:</td>
+                <td class="label" id="visibility">Loading...</td>
+            </tr>
+            
+           
+        </table>
+
+    </div>
+
+    <script>
+        const url = "https://api.wheretheiss.at/v1/satellites/25544";
+
+        async function getIssData() {
+
+            let responce = await fetch(url);
+            let r = await responce.json();
+
+            var speed = r.velocity;
+            var latitude = r.latitude;
+            var longitude = r.longitude;
+            var altitude = r.altitude;
+            var visibility = r.visibility;
+
+            // alert(speed.toFixed(2));
+            document.getElementById("speed").textContent = speed.toFixed(2) + " km/h";
+            document.getElementById("latitude").textContent = latitude.toFixed(4) + " º";
+            document.getElementById("longitude").textContent = longitude.toFixed(4) + " º";
+            document.getElementById("altitude").textContent = altitude.toFixed(2) + " km";
+            document.getElementById("visibility").textContent = visibility;
+
+            updateData();
+        }
+
+        function updateData() {
+            setInterval(getIssData(), 1000);
+        }
+    </script>
+</body>
+
+</html>
